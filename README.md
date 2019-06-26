@@ -1,5 +1,13 @@
 # FabricsMLJava
 
-Run app location: com.ingrain.fabrics.FabricsApp
+Run app location: 
 
-VA args: --module-path ./lib --add-modules javafx.base,javafx.controls,javafx.graphics,javafx.fxml
+```
+com.ingrain.fabrics.FabricsApp
+```
+
+VA args: 
+
+```
+--module-path ./lib --add-modules javafx.base,javafx.controls,javafx.graphics,javafx.fxml
+```

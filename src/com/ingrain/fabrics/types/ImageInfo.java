@@ -1,6 +1,5 @@
 package com.ingrain.fabrics.types;
 
-import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

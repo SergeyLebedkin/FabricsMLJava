@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -18,17 +17,8 @@ import javafx.stage.FileChooser;
 
 // SelectWindowController
 public class SelectWindowController {
-    @FXML
-    private VBox mainPanel;
-
-    @FXML
-    private Button buttonSelectImage;
-
-    @FXML
-    private Button buttonScaleDown;
-
-    @FXML
-    private Button buttonScaleUp;
+	@FXML
+	private VBox mainPanel;
 
 	// main canvas
 	private ResizableCanvas canvasMain;
@@ -42,12 +32,12 @@ public class SelectWindowController {
 		canvasMain.setHeight(100);
 		canvasMain.setOnScroll(event -> {
 			if (event.getDeltaY() > 0) {
-				canvasMain.setWidth(canvasMain.getWidth()/1.3);
-				canvasMain.setHeight(canvasMain.getHeight()/1.3);
+				canvasMain.setWidth(canvasMain.getWidth() / 1.3);
+				canvasMain.setHeight(canvasMain.getHeight() / 1.3);
 				this.draw();
 			} else {
-				canvasMain.setWidth(canvasMain.getWidth()*1.3);
-				canvasMain.setHeight(canvasMain.getHeight()*1.3);
+				canvasMain.setWidth(canvasMain.getWidth() * 1.3);
+				canvasMain.setHeight(canvasMain.getHeight() * 1.3);
 				this.draw();
 			}
 		});
@@ -65,29 +55,29 @@ public class SelectWindowController {
 			draw();
 		}
 	}
-	
+
 	@FXML
 	void buttonScaleDownClick(MouseEvent event) throws IOException {
-		canvasMain.setWidth(canvasMain.getWidth()/2);
-		canvasMain.setHeight(canvasMain.getHeight()/2);
+		canvasMain.setWidth(canvasMain.getWidth() / 2);
+		canvasMain.setHeight(canvasMain.getHeight() / 2);
 		draw();
 	}
-	
+
 	@FXML
 	void buttonScaleUpClick(MouseEvent event) throws IOException {
-		canvasMain.setWidth(canvasMain.getWidth()*2);
-		canvasMain.setHeight(canvasMain.getHeight()*2);
+		canvasMain.setWidth(canvasMain.getWidth() * 2);
+		canvasMain.setHeight(canvasMain.getHeight() * 2);
 		draw();
 	}
-	
+
 	void draw() {
 		// copy image to canvas
 		if (bufferedImage != null) {
 			WritableImage writableImage = new WritableImage(bufferedImage.getWidth(), bufferedImage.getHeight());
 			// draw original image
-			canvasMain.getGraphicsContext2D().drawImage(SwingFXUtils.toFXImage(bufferedImage, writableImage), 
-					0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(),
-					0, 0, canvasMain.getWidth(), canvasMain.getHeight());
+			canvasMain.getGraphicsContext2D().drawImage(SwingFXUtils.toFXImage(bufferedImage, writableImage), 0, 0,
+					bufferedImage.getWidth(), bufferedImage.getHeight(), 0, 0, canvasMain.getWidth(),
+					canvasMain.getHeight());
 		}
 	}
 }

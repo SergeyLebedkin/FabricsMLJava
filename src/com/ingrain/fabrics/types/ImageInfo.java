@@ -2,7 +2,9 @@ package com.ingrain.fabrics.types;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class ImageInfo {
 	public int intensityMedium = 150;
 	public int intensityHigh = 250;
 	// image resolution
-	public float imageResolution = 0.00024f;
+	public float imageResolution = 0.00025f;
 
 	// loadFromFile
 	public void loadFromFile(File file) {
@@ -87,10 +89,12 @@ public class ImageInfo {
 					float x = Float.parseFloat(xAttr);
 					float y = Float.parseFloat(yAttr);
 					PixelLocationOnOverview pixelLocationOnOverview = new PixelLocationOnOverview(x, y);
-					this.addPixelLocationOnOverview(pixelLocationOnOverview);
-					System.out.println(x);
-					System.out.println(y);
+					pixelLocationOnOverview.inBlackList = i%2 == 0;
+					this.highResolutionImageData.add(pixelLocationOnOverview);
 				}
+
+				// update high resolution canvases
+				this.updateHighResAreaCanvas();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -143,14 +147,6 @@ public class ImageInfo {
 		}
 	}
 
-	// addPixelLocationOnOverview
-	public void addPixelLocationOnOverview(PixelLocationOnOverview pixelLocation) {
-		// add pixel location on overview
-		this.highResolutionImageData.add(pixelLocation);
-		// update High Res Area Canvas
-		this.updateHighResAreaCanvas();
-	}
-
 	// updateHighResAreaCanvas
 	public void updateHighResAreaCanvas() {
 		// get rect dimentions
@@ -166,10 +162,17 @@ public class ImageInfo {
 		canvasHighResMaskCtx.fillRect(0, 0, this.canvasHighResMask.getWidth(), this.canvasHighResArea.getHeight());
 		// draw rects
 		for (int i = 0; i < this.highResolutionImageData.size(); i++) {
+			// get pixel location
 			PixelLocationOnOverview pixelLocation = this.highResolutionImageData.get(i);
+			// draw high resolution area rect and index
 			canvasHighResAreaCtx.setStroke(new BasicStroke(4));
-			canvasHighResAreaCtx.setColor(pixelLocation.inBlackList ? Color.LIGHT_GRAY : new Color(255, 129, 0, 255));
+			canvasHighResAreaCtx.setColor(pixelLocation.inBlackList ?  new Color(128, 128, 128, 255) : new Color(255, 129, 0, 255));
 			canvasHighResAreaCtx.drawRect((int) pixelLocation.x, (int) pixelLocation.y, rectWidth, rectHeight);
+			canvasHighResAreaCtx.setFont(new Font("Arial", Font.PLAIN, 60));
+			canvasHighResAreaCtx.drawString(Integer.toString(i+i), pixelLocation.x + 20, pixelLocation.y + 50);
+			// draw high resolution mask
+			canvasHighResMaskCtx.setColor(new Color(i+1, 0, 0, 255));
+			canvasHighResMaskCtx.fillRect((int) pixelLocation.x, (int) pixelLocation.y, rectWidth, rectHeight);
 		};
 	}
 }

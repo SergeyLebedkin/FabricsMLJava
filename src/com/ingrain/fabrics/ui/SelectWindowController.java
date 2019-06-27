@@ -70,19 +70,18 @@ public class SelectWindowController {
 	void drawImageInfo() {
 		// copy image to canvas
 		if (imageInfo != null) {
-			this.canvasMain.setWidth(imageInfo.canvasImage.getWidth() * this.scale);
-			this.canvasMain.setHeight(imageInfo.canvasImage.getHeight() * this.scale);
 			// get dimantions
 			double sw = this.imageInfo.canvasImage.getWidth();
 			double sh = this.imageInfo.canvasImage.getHeight();
-			double dw = this.canvasMain.getWidth();
-			double dh = this.canvasMain.getHeight();
-
+			double dw = sw * this.scale;
+			double dh = sh * this.scale;
+			// change canvas dimentions
+			this.canvasMain.setWidth(dw);
+			this.canvasMain.setHeight(dh);
 			// create proxy image and get context
-			WritableImage writableImage = new WritableImage((int) sw, (int) sh);
+			WritableImage writableImage = null;
 			GraphicsContext graphicsContext = this.canvasMain.getGraphicsContext2D();
 			graphicsContext.setGlobalAlpha(1.0);
-
 			// draw image and all other layers
 			writableImage = SwingFXUtils.toFXImage(this.imageInfo.canvasImage, null);
 			graphicsContext.drawImage(writableImage, 0, 0, sw, sh, 0, 0, dw, dh);

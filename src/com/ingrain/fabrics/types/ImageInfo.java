@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -173,6 +172,6 @@ public class ImageInfo {
 			// draw high resolution mask
 			canvasHighResMaskCtx.setColor(new Color(i+1, 0, 0, 255));
 			canvasHighResMaskCtx.fillRect((int) pixelLocation.x, (int) pixelLocation.y, rectWidth, rectHeight);
-		};
+		}
 	}
 }

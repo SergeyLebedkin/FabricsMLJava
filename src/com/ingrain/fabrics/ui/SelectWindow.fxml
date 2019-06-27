@@ -1,18 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<ScrollPane prefHeight="429.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ingrain.fabrics.ui.SelectWindowController">
-   <content>
-      <VBox fx:id="mainPanel">
-         <children>
-            <Button fx:id="buttonScaleDown" mnemonicParsing="false" onMousePressed="#buttonScaleDownClick" prefHeight="25.0" prefWidth="395.0" text="-" />
-            <Button fx:id="buttonScaleUp" mnemonicParsing="false" onMousePressed="#buttonScaleUpClick" prefHeight="25.0" prefWidth="394.0" text="+" />
-            <Button fx:id="buttonSelectImage" mnemonicParsing="false" onMousePressed="#buttonSelectImageClick" prefHeight="25.0" prefWidth="392.0" text="Select image" />
-         </children>
-      </VBox>
-   </content>
-</ScrollPane>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.ingrain.fabrics.ui.SelectWindowController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
+    <ColumnConstraints hgrow="SOMETIMES" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true">
+         <content>
+            <AnchorPane>
+               <children>
+                  <Button fx:id="buttonLoadImage" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="374.0" text="Load image" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                  <Button fx:id="buttonLoadImageData" layoutX="14.0" layoutY="39.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="374.0" text="Load image data" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                  <ComboBox fx:id="comboBoxImages" layoutX="14.0" layoutY="64.0" prefHeight="25.0" prefWidth="472.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                  <Label layoutX="15.0" layoutY="100.0" text="Image dims (px):" AnchorPane.leftAnchor="14.0" />
+                  <Label layoutX="138.0" layoutY="100.0" text="x:" AnchorPane.leftAnchor="138.0" />
+                  <TextField fx:id="textFieldImageDimsXPx" editable="false" layoutX="147.0" layoutY="96.0" prefHeight="25.0" prefWidth="96.0" />
+                  <Label layoutX="254.0" layoutY="99.0" text="y:" AnchorPane.leftAnchor="254.0" />
+                  <TextField fx:id="textFieldImageDimsYPx" editable="false" layoutX="263.0" layoutY="96.0" prefHeight="25.0" prefWidth="96.0" />
+                  <Label layoutX="13.0" layoutY="132.0" text="Image dims (mm):" AnchorPane.leftAnchor="14.0" />
+                  <Label layoutX="138.0" layoutY="132.0" text="x:" />
+                  <TextField fx:id="textFieldImageDimsXMm" editable="false" layoutX="147.0" layoutY="128.0" prefHeight="25.0" prefWidth="96.0" />
+                  <Label layoutX="254.0" layoutY="132.0" text="y:" />
+                  <TextField fx:id="textFieldImageDimsYMm" editable="false" layoutX="263.0" layoutY="128.0" prefHeight="25.0" prefWidth="96.0" AnchorPane.leftAnchor="263.0" />
+                  <Label layoutX="13.0" layoutY="164.0" text="Image resolution (mm):" AnchorPane.leftAnchor="14.0" />
+                  <TextField fx:id="textFieldImageResolution" editable="false" layoutX="147.0" layoutY="160.0" prefHeight="25.0" prefWidth="96.0" />
+                  <ComboBox fx:id="comboBoxAreaIndex" layoutX="14.0" layoutY="192.0" prefHeight="25.0" prefWidth="130.0" AnchorPane.leftAnchor="14.0" />
+                  <Button fx:id="buttonAddToBlackList" layoutX="147.0" layoutY="192.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" text="Add" />
+                  <Button fx:id="buttonRemoveFromBlackList" layoutX="263.0" layoutY="192.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" text="Remove" />
+                  <Button layoutX="15.0" layoutY="229.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="472.0" text="Load high resolution images" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                  <ComboBox layoutX="15.0" layoutY="254.0" prefHeight="25.0" prefWidth="472.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                  <Button layoutX="14.0" layoutY="651.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="374.0" text="Save high resolution images data" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                  <VBox fx:id="panelHighRes" layoutX="14.0" layoutY="279.0" prefHeight="372.0" prefWidth="480.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+      <VBox fx:id="panelMain" GridPane.columnIndex="1" />
+   </children>
+</GridPane>

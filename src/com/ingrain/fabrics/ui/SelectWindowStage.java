@@ -28,6 +28,8 @@ public class SelectWindowStage extends Stage {
 		scene = new Scene(root);
 		// create stage
 		setTitle("FabricsML - Select");
+		setWidth(800);
+		setHeight(600);
 		setScene(scene);
 	}
 }

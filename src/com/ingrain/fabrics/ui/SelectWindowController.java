@@ -1,17 +1,16 @@
 package com.ingrain.fabrics.ui;
 
-import com.ingrain.fabrics.ui.controls.ResizableCanvas;
-
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
+import com.ingrain.fabrics.types.ImageInfo;
+import com.ingrain.fabrics.ui.controls.ResizableCanvas;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -22,62 +21,77 @@ public class SelectWindowController {
 
 	// main canvas
 	private ResizableCanvas canvasMain;
-	private File file;
-	BufferedImage bufferedImage;
+
+	// image info
+	private ImageInfo imageInfo = new ImageInfo();
 
 	@FXML
 	void initialize() {
 		canvasMain = new ResizableCanvas();
-		canvasMain.setWidth(100);
-		canvasMain.setHeight(100);
-		canvasMain.setOnScroll(event -> {
-			if (event.getDeltaY() > 0) {
-				canvasMain.setWidth(canvasMain.getWidth() / 1.3);
-				canvasMain.setHeight(canvasMain.getHeight() / 1.3);
-				this.draw();
-			} else {
-				canvasMain.setWidth(canvasMain.getWidth() * 1.3);
-				canvasMain.setHeight(canvasMain.getHeight() * 1.3);
-				this.draw();
-			}
-		});
+		canvasMain.setWidth(1024);
+		canvasMain.setHeight(1024);
+		canvasMain.setOnScroll(event -> this.canvasMainOnScroll(event));
 		mainPanel.getChildren().add(canvasMain);
 	}
 
 	@FXML
-	void buttonSelectImageClick(MouseEvent event) throws IOException {
+	void buttonScaleDownClick(MouseEvent event) {
 		// create file chooser and load file
 		final FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Tiff files", "*.tif;*.tiff;*.jpg"));
-		file = fileChooser.showOpenDialog(null);
-		if (file != null) {
-			bufferedImage = ImageIO.read(file);
-			draw();
-		}
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML file", "*.xml"));
+		File file = fileChooser.showOpenDialog(null);
+		imageInfo.loadImageDataFile(file);
+		this.drawImageInfo();
 	}
 
 	@FXML
-	void buttonScaleDownClick(MouseEvent event) throws IOException {
-		canvasMain.setWidth(canvasMain.getWidth() / 2);
-		canvasMain.setHeight(canvasMain.getHeight() / 2);
-		draw();
-	}
-
-	@FXML
-	void buttonScaleUpClick(MouseEvent event) throws IOException {
+	void buttonScaleUpClick(MouseEvent event) {
 		canvasMain.setWidth(canvasMain.getWidth() * 2);
 		canvasMain.setHeight(canvasMain.getHeight() * 2);
-		draw();
+		this.drawImageInfo();
 	}
 
-	void draw() {
+	@FXML
+	void buttonSelectImageClick(MouseEvent event) {
+		// create file chooser and load file
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Tiff file", "*.tiff;*.tif"));
+		File file = fileChooser.showOpenDialog(null);
+		imageInfo.loadFromFile(file);
+		this.drawImageInfo();
+	}
+
+	// canvasMainOnScroll
+	void canvasMainOnScroll(ScrollEvent event) {
+		if (event.getDeltaY() < 0) {
+			canvasMain.setWidth(canvasMain.getWidth() / 1.3);
+			canvasMain.setHeight(canvasMain.getHeight() / 1.3);
+		} else {
+			canvasMain.setWidth(canvasMain.getWidth() * 1.3);
+			canvasMain.setHeight(canvasMain.getHeight() * 1.3);
+		}
+		this.drawImageInfo();
+	};
+
+	void drawImageInfo() {
 		// copy image to canvas
-		if (bufferedImage != null) {
-			WritableImage writableImage = new WritableImage(bufferedImage.getWidth(), bufferedImage.getHeight());
-			// draw original image
-			canvasMain.getGraphicsContext2D().drawImage(SwingFXUtils.toFXImage(bufferedImage, writableImage), 0, 0,
-					bufferedImage.getWidth(), bufferedImage.getHeight(), 0, 0, canvasMain.getWidth(),
-					canvasMain.getHeight());
+		if (imageInfo != null) {
+			// get dimantions
+			double sw = imageInfo.canvasImage.getWidth();
+			double sh = imageInfo.canvasImage.getHeight();
+			double dw = canvasMain.getWidth();
+			double dh = canvasMain.getHeight();
+
+			// create proxy image and get context
+			WritableImage writableImage = new WritableImage((int) sw, (int) sh);
+			GraphicsContext graphicsContext = canvasMain.getGraphicsContext2D();
+			graphicsContext.setGlobalAlpha(1.0);
+
+			// draw image
+			writableImage = SwingFXUtils.toFXImage(imageInfo.canvasImage, null);
+			graphicsContext.drawImage(writableImage, 0, 0, sw, sh, 0, 0, dw, dh);
+			writableImage = SwingFXUtils.toFXImage(imageInfo.canvasHighResArea, null);
+			graphicsContext.drawImage(writableImage, 0, 0, sw, sh, 0, 0, dw, dh);
 		}
 	}
 }
